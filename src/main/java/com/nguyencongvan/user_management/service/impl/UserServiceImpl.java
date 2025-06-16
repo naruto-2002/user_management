@@ -49,11 +49,9 @@ public class UserServiceImpl implements UserService {
             throw new AppException(ErrorCode.ROLE_NOT_FOUND);
         }
 
-        List<Role> roles = new ArrayList<>();
-
-        Role roleUser = Role.builder().name(RoleUser.USER.name()).build();
-
-        roles.add(roleUser);
+        List<Role> roles = roleRepository.findById(RoleUser.USER.name())
+                .map(List::of)
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
         user.setRoles(new HashSet<>(roles));
 
